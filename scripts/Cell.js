@@ -1,4 +1,5 @@
 import CellDrawer from "./CellDrawer.js";
+import cellState from "./cellState.js";
 
 export default class Cell {
     constructor(x, y, width, value) {
@@ -6,6 +7,7 @@ export default class Cell {
         this.y = y;
         this.width = width;
         this.value = value;
+        this.cellState = cellState.UNREVEALED;
         this.cellDrawer = new CellDrawer();
     }
 
@@ -17,11 +19,12 @@ export default class Cell {
         this.value = value;
     }
 
-    drawBlankCell() {
-        this.cellDrawer.drawBlankCell(this.x, this.y, this.width);
+    drawBlankCell(cellState) {
+        this.cellDrawer.drawBlankCell(this.x, this.y, this.width, cellState);
     }
 
     drawRevealedCell() {
+        this.cellState = cellState.REVEALED;
         this.cellDrawer.drawRevealedCell(this.x, this.y, this.width, this.value);
     }
 

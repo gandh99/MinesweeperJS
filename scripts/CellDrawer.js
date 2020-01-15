@@ -1,20 +1,31 @@
 import getValueColour from "./cellColour.js";
+import cellState from "./cellState.js";
 
 export default class CellDrawer {
     constructor() {
 
     }
 
-    drawBlankCell(x, y, width) {
+    drawBlankCell(x, y, width, currentCellState) {
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
         ctx.beginPath();
-        ctx.fillStyle = "#c2bfc0";
+        ctx.fillStyle = (currentCellState == cellState.REVEALED) ? "white" : "#c2bfc0";
         ctx.rect(x, y, width, width);
         ctx.fill();
         ctx.lineWidth = 1;
         ctx.strokeStyle = 'black';
         ctx.stroke();
+    }
+
+    drawRevealedCell(x, y, width, value) {
+        this.drawBlankCell(x, y, width, cellState.REVEALED);
+
+        if (value == "x") {
+            this.drawMine("../images/mine.png", x, y, width)
+        } else {
+            this.drawText(x, y, value);
+        }
     }
 
     drawText(x, y, value) {
@@ -23,16 +34,6 @@ export default class CellDrawer {
         ctx.fillStyle = getValueColour(value);
         ctx.font = 'bold 30px serif';
         ctx.fillText(value, x + 17, y + 35);
-    }
-
-    drawRevealedCell(x, y, width, value) {
-        this.drawBlankCell(x, y, width);
-
-        if (value == "x") {
-            this.drawMine("../images/mine.png", x, y, width)
-        } else {
-            this.drawText(x, y, value);
-        }
     }
 
     drawMine(url, x, y, width) {

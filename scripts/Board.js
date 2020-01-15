@@ -1,4 +1,5 @@
 import Cell from "./Cell.js";
+import cellState from "./cellState.js";
 
 export default class Board {
     constructor(numOfRows, numOfCols, percentOfMines, startX, startY, width) {
@@ -47,7 +48,7 @@ export default class Board {
     render() {
         for (let i = 0; i < this.numOfRows; i++) {
             for (let j = 0; j < this.numOfCols; j++) {
-                this.grid[i][j].drawBlankCell();
+                this.grid[i][j].drawBlankCell(cellState.UNREVEALED);
             }
         }
     }
