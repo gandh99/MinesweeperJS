@@ -9,6 +9,14 @@ export default class Cell {
         this.cellDrawer = new CellDrawer();
     }
 
+    get cellValue() {
+        return this.value;
+    }
+
+    set cellValue(value) {
+        this.value = value;
+    }
+
     drawBlankCell() {
         this.cellDrawer.drawBlankCell(this.x, this.y, this.width);
     }

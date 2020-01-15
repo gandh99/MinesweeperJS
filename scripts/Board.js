@@ -47,7 +47,7 @@ export default class Board {
     render() {
         for (let i = 0; i < this.numOfRows; i++) {
             for (let j = 0; j < this.numOfCols; j++) {
-                this.grid[i][j].drawRevealedCell();
+                this.grid[i][j].drawBlankCell();
             }
         }
     }
@@ -83,6 +83,28 @@ export default class Board {
         // Get the cell that was selected
         let selectedRow = Math.floor((y - this.startY) / this.width);
         let selectedCol = Math.floor((x - this.startX) / this.width);
-        console.log(selectedRow, selectedCol);
+
+        // Reveal the cell(s)
+        if (this.grid[selectedRow][selectedCol].cellValue == 0) {
+            this.revealSurroundingCells(selectedRow, selectedCol);
+            return;
+        }
+        this.grid[selectedRow][selectedCol].drawRevealedCell();
+    }
+
+    revealSurroundingCells(rowIdx, colIdx) {
+        for (let i = rowIdx - 1; i <= rowIdx + 1; i++) {
+            for (let j = colIdx - 1; j <= colIdx + 1; j++) {
+                if (i < 0 || i >= this.numOfRows || j < 0 || j >= this.numOfCols) {
+                    continue;
+                } else if (i == rowIdx && j == colIdx) {
+                    this.grid[i][j].cellValue = -1;     // indicates a tile initially marked 0 has been revealed
+                } else if (this.grid[i][j].cellValue == 0) {
+                    this.revealSurroundingCells(i, j);
+                } else {
+                    this.grid[i][j].drawRevealedCell();
+                }
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ export default class CellDrawer {
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
         ctx.beginPath();
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "#c2bfc0";
         ctx.rect(x, y, width, width);
         ctx.fill();
         ctx.lineWidth = 1;
