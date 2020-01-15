@@ -17,3 +17,12 @@ let percentageOfMines = 0.2;
 let board = new Board(numOfRows, numOfCols, percentageOfMines, startX, startY, width);
 board.init();
 board.render();
+
+// Listen for clicks
+canvas.addEventListener('click', function (event) {
+    let elemLeft = canvas.offsetLeft,
+        elemTop = canvas.offsetTop,
+        x = event.pageX - elemLeft,
+        y = event.pageY - elemTop;
+    board.select(x, y);
+}, false);

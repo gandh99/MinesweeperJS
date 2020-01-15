@@ -71,4 +71,18 @@ export default class Board {
         return numberOfMines;
     }
 
+    select(x, y) {
+        // Ignore if x and y are out of bounds
+        if (x < this.startX
+            || x > this.startX + this.width * this.numOfCols
+            || y < this.startY
+            || y > this.startY + this.width * this.numOfRows) {
+            return;
+        }
+
+        // Get the cell that was selected
+        let selectedRow = Math.floor((y - this.startY) / this.width);
+        let selectedCol = Math.floor((x - this.startX) / this.width);
+        console.log(selectedRow, selectedCol);
+    }
 }
