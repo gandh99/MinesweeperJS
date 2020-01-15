@@ -1,0 +1,19 @@
+import Board from "./Board.js";
+
+// Resize canvas
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+ctx.canvas.width = window.innerWidth;
+ctx.canvas.height = window.innerHeight;
+
+// Global variables
+let width = 50;
+let startX = 400;
+let startY = 10;
+let numOfRows = 10;
+let numOfCols = 10;
+let percentageOfMines = 0.2;
+
+let board = new Board(numOfRows, numOfCols, percentageOfMines, startX, startY, width);
+board.init();
+board.render();
