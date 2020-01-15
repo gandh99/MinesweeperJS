@@ -1,5 +1,5 @@
 import Cell from "./Cell.js";
-import cellState from "./cellState.js";
+import CellState from "./CellState.js";
 
 export default class Board {
     constructor(numOfRows, numOfCols, percentOfMines, startX, startY, width) {
@@ -48,7 +48,7 @@ export default class Board {
     render() {
         for (let i = 0; i < this.numOfRows; i++) {
             for (let j = 0; j < this.numOfCols; j++) {
-                this.grid[i][j].drawBlankCell(cellState.UNREVEALED);
+                this.grid[i][j].drawBlankCell(CellState.UNREVEALED);
             }
         }
     }
@@ -85,7 +85,7 @@ export default class Board {
         let selectedRow = Math.floor((y - this.startY) / this.width);
         let selectedCol = Math.floor((x - this.startX) / this.width);
 
-        // Reveal the cell(s)
+        // Reveal the surrounding cells if this cell has no surrounding mines
         if (this.grid[selectedRow][selectedCol].cellValue == 0) {
             this.revealSurroundingCells(selectedRow, selectedCol);
             return;
@@ -96,14 +96,15 @@ export default class Board {
     revealSurroundingCells(rowIdx, colIdx) {
         for (let i = rowIdx - 1; i <= rowIdx + 1; i++) {
             for (let j = colIdx - 1; j <= colIdx + 1; j++) {
-                if (i < 0 || i >= this.numOfRows || j < 0 || j >= this.numOfCols) {
+                if (i < 0 || i >= this.numOfRows || j < 0 || j >= this.numOfCols || this.grid[i][j].isRevealed()) {
                     continue;
-                } else if (i == rowIdx && j == colIdx) {
-                    this.grid[i][j].cellValue = -1;     // indicates a tile initially marked 0 has been revealed
-                } else if (this.grid[i][j].cellValue == 0) {
+                }
+
+                this.grid[i][j].markRevealed();
+                this.grid[i][j].drawRevealedCell();
+
+                if (this.grid[i][j].cellValue == 0) {
                     this.revealSurroundingCells(i, j);
-                } else {
-                    this.grid[i][j].drawRevealedCell();
                 }
             }
         }

@@ -1,7 +1,7 @@
 
-const cellState = {
+const CellState = {
     UNREVEALED: "unrevealed",
     REVEALED: "revealed"
 } 
 
-export default cellState;
+export default CellState;

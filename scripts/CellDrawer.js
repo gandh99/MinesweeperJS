@@ -1,5 +1,5 @@
 import getValueColour from "./cellColour.js";
-import cellState from "./cellState.js";
+import CellState from "./CellState.js";
 
 export default class CellDrawer {
     constructor() {
@@ -10,7 +10,7 @@ export default class CellDrawer {
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
         ctx.beginPath();
-        ctx.fillStyle = (currentCellState == cellState.REVEALED) ? "white" : "#c2bfc0";
+        ctx.fillStyle = (currentCellState == CellState.REVEALED) ? "white" : "#c2bfc0";
         ctx.rect(x, y, width, width);
         ctx.fill();
         ctx.lineWidth = 1;
@@ -19,7 +19,7 @@ export default class CellDrawer {
     }
 
     drawRevealedCell(x, y, width, value) {
-        this.drawBlankCell(x, y, width, cellState.REVEALED);
+        this.drawBlankCell(x, y, width, CellState.REVEALED);
 
         if (value == "x") {
             this.drawMine("../images/mine.png", x, y, width)
