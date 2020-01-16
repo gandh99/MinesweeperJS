@@ -40,7 +40,7 @@ export default class Board {
 
                 // If the cell is not a mine, assign a number to it based on the no. of surrounding mines
                 let number = this.getNumberOfSurroundingMines(i, j);
-                this.grid[i][j].setValue(number);
+                this.grid[i][j].cellValue = number;
             }
         }
     }
@@ -48,7 +48,7 @@ export default class Board {
     render() {
         for (let i = 0; i < this.numOfRows; i++) {
             for (let j = 0; j < this.numOfCols; j++) {
-                this.grid[i][j].drawCell(CellState.UNREVEALED);
+                this.grid[i][j].drawCell();
             }
         }
     }
@@ -91,18 +91,18 @@ export default class Board {
             return;
         }
         this.grid[selectedRow][selectedCol].markRevealed();
-        this.grid[selectedRow][selectedCol].drawRevealedCell();
+        this.grid[selectedRow][selectedCol].drawCell();
     }
 
     revealSurroundingCells(rowIdx, colIdx) {
         for (let i = rowIdx - 1; i <= rowIdx + 1; i++) {
             for (let j = colIdx - 1; j <= colIdx + 1; j++) {
-                if (i < 0 || i >= this.numOfRows || j < 0 || j >= this.numOfCols || this.grid[i][j].isRevealed()) {
+                if (i < 0 || i >= this.numOfRows || j < 0 || j >= this.numOfCols || this.grid[i][j].cellRevealed()) {
                     continue;
                 }
 
                 this.grid[i][j].markRevealed();
-                this.grid[i][j].drawRevealedCell();
+                this.grid[i][j].drawCell();
 
                 if (this.grid[i][j].cellValue == 0) {
                     this.revealSurroundingCells(i, j);

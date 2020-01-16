@@ -6,7 +6,8 @@ export default class CellDrawer {
 
     }
 
-    drawCell(x, y, width, currentCellState) {
+    drawCell(x, y, width, currentCellState, value) {
+        // Draw the cell
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
         ctx.beginPath();
@@ -16,16 +17,16 @@ export default class CellDrawer {
         ctx.lineWidth = 1;
         ctx.strokeStyle = 'black';
         ctx.stroke();
-    }
 
-    drawRevealedCell(x, y, width, value) {
-        this.drawCell(x, y, width, CellState.REVEALED_SAFE);
-
-        if (value == -1) {
-            this.drawMine("../images/mine.png", x, y, width)
-        } else {
+        // Draw the content (if applicable)
+        if (currentCellState == CellState.UNREVEALED) {
+            return;
+        } else if (currentCellState == CellState.REVEALED_SAFE) {
             this.drawText(x, y, value);
+        } else if (currentCellState == CellState.REVEALED_MINE) {
+            this.drawMine(x, y, width);
         }
+
     }
 
     drawText(x, y, value) {
@@ -36,12 +37,13 @@ export default class CellDrawer {
         ctx.fillText(value, x + 17, y + 35);
     }
 
-    drawMine(url, x, y, width) {
+    drawMine(x, y, width) {
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
 
         // Create an image object. This is not attached to the DOM and is not part of the page.
-        var image = new Image();
+        let url = "../images/mine.png";
+        let image = new Image();
 
         // When the image has loaded, draw it to the canvas
         image.onload = function () {
