@@ -1,4 +1,5 @@
 import startGame from "./gameManager.js";
+import BoardSize from "./BoardSize.js";
 
 // Resize canvas
 let canvas = document.getElementById('canvas');
@@ -7,15 +8,19 @@ ctx.canvas.width = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
 
 // Draw size buttons
-let startX = 10;
-let startY = 100;
+let startX = 10, startY = 100;
 let sizeButtonVerticalMargin = 100;
+let buttonWidth = 200, buttonHeight = 70;
 
-drawSizeButton(startX, startY, 200, 70, "Small");
-drawSizeButton(startX, startY + sizeButtonVerticalMargin, 200, 70, "Medium");
-drawSizeButton(startX, startY + 2 * sizeButtonVerticalMargin, 200, 70, "Large");
+drawMenuBar();
 
-function drawSizeButton(startX, startY, width, height, text) {
+function drawMenuBar() {
+    drawSizeButton(startX, startY, buttonWidth, buttonHeight, BoardSize.SMALL);
+    drawSizeButton(startX, startY + sizeButtonVerticalMargin, buttonWidth, buttonHeight, BoardSize.MEDIUM);
+    drawSizeButton(startX, startY + 2 * sizeButtonVerticalMargin, buttonWidth, buttonHeight, BoardSize.LARGE);
+}
+
+function drawSizeButton(startX, startY, width, height, boardSize) {
     // Draw the button
     ctx.beginPath();
     ctx.fillStyle = "white";
@@ -26,7 +31,7 @@ function drawSizeButton(startX, startY, width, height, text) {
     ctx.stroke();
     ctx.fillStyle = "black";
     ctx.font = 'bold 30px serif';
-    ctx.fillText(text, startX + 10, startY + 40);
+    ctx.fillText(BoardSize.properties[boardSize].name, startX + 10, startY + 40);
 
     // Add click functionality
     canvas.addEventListener('click', function (event) {
@@ -35,9 +40,9 @@ function drawSizeButton(startX, startY, width, height, text) {
             x = event.pageX - elemLeft,
             y = event.pageY - elemTop;
         if (x > startX && x < startX + width && y > startY && y < startY + height) {
-            alert(text);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawMenuBar();
+            startGame(boardSize);
         }
     }, false);
 }
-
-startGame();

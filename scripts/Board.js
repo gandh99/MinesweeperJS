@@ -1,5 +1,4 @@
 import Cell from "./Cell.js";
-import CellState from "./CellState.js";
 
 export default class Board {
     constructor(numOfRows, numOfCols, percentOfMines, startX, startY, width) {
