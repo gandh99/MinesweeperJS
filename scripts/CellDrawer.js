@@ -22,19 +22,22 @@ export default class CellDrawer {
         if (currentCellState == CellState.UNREVEALED) {
             return;
         } else if (currentCellState == CellState.REVEALED_SAFE) {
-            this.drawText(x, y, value);
+            this.drawText(x, y, width, value);
         } else if (currentCellState == CellState.REVEALED_MINE) {
             this.drawMine(x, y, width);
         }
 
     }
 
-    drawText(x, y, value) {
+    drawText(x, y, width, value) {
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
         ctx.fillStyle = getTextColour(value);
-        ctx.font = 'bold 30px serif';
-        ctx.fillText(value, x + 17, y + 35);
+
+        // Determine the size and placement of the value
+        let fontSize = 0.7 * width;
+        ctx.font = 'bold ' + fontSize + 'px' + ' serif';
+        ctx.fillText(value, x + fontSize/2, y + fontSize);
     }
 
     drawMine(x, y, width) {
