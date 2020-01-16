@@ -21,7 +21,7 @@ export default class CellDrawer {
     drawRevealedCell(x, y, width, value) {
         this.drawBlankCell(x, y, width, CellState.REVEALED);
 
-        if (value == "x") {
+        if (value == -1) {
             this.drawMine("../images/mine.png", x, y, width)
         } else {
             this.drawText(x, y, value);

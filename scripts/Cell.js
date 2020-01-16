@@ -29,7 +29,7 @@ export default class Cell {
     }
 
     isMine() {
-        return this.value == "x";
+        return this.value == -1;
     }
 
     setValue(value) {

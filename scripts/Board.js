@@ -25,7 +25,7 @@ export default class Board {
         // Create the cells and determine if each is a mine or not
         for (let i = 0; i < this.numOfRows; i++) {
             for (let j = 0; j < this.numOfCols; j++) {
-                let value = (Math.random() < this.percentOfMines) ? "x" : "";
+                let value = (Math.random() < this.percentOfMines) ? -1 : 0; // -1 represents a mine; 0 is temporary
                 this.grid[i][j] =
                     new Cell(this.startX + j * this.width, this.startY + i * this.width, this.width, value);
             }
