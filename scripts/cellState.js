@@ -1,7 +1,8 @@
 
 const CellState = {
     UNREVEALED: "unrevealed",
-    REVEALED: "revealed"
+    REVEALED_SAFE: "revealedSafe",
+    REVEALED_MINE: "revealedMine"
 } 
 
 export default CellState;

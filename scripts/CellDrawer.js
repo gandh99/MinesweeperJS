@@ -1,4 +1,4 @@
-import getValueColour from "./cellColour.js";
+import {getTextColour, getCellColour} from "./colourMap.js";
 import CellState from "./CellState.js";
 
 export default class CellDrawer {
@@ -6,11 +6,11 @@ export default class CellDrawer {
 
     }
 
-    drawBlankCell(x, y, width, currentCellState) {
+    drawCell(x, y, width, currentCellState) {
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
         ctx.beginPath();
-        ctx.fillStyle = (currentCellState == CellState.REVEALED) ? "white" : "#c2bfc0";
+        ctx.fillStyle = getCellColour(currentCellState);
         ctx.rect(x, y, width, width);
         ctx.fill();
         ctx.lineWidth = 1;
@@ -19,7 +19,7 @@ export default class CellDrawer {
     }
 
     drawRevealedCell(x, y, width, value) {
-        this.drawBlankCell(x, y, width, CellState.REVEALED);
+        this.drawCell(x, y, width, CellState.REVEALED_SAFE);
 
         if (value == -1) {
             this.drawMine("../images/mine.png", x, y, width)
@@ -31,7 +31,7 @@ export default class CellDrawer {
     drawText(x, y, value) {
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
-        ctx.fillStyle = getValueColour(value);
+        ctx.fillStyle = getTextColour(value);
         ctx.font = 'bold 30px serif';
         ctx.fillText(value, x + 17, y + 35);
     }

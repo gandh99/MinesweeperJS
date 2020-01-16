@@ -19,12 +19,11 @@ export default class Cell {
         this.value = value;
     }
 
-    drawBlankCell(cellState) {
-        this.cellDrawer.drawBlankCell(this.x, this.y, this.width, cellState);
+    drawCell(cellState) {
+        this.cellDrawer.drawCell(this.x, this.y, this.width, cellState);
     }
 
     drawRevealedCell() {
-        this.cellState = CellState.REVEALED;
         this.cellDrawer.drawRevealedCell(this.x, this.y, this.width, this.value);
     }
 
@@ -37,10 +36,10 @@ export default class Cell {
     }
 
     markRevealed() {
-        this.cellState = CellState.REVEALED;
+        this.cellState = (this.value == -1) ? CellState.REVEALED_MINE : CellState.REVEALED_SAFE;
     }
 
     isRevealed() {
-        return this.cellState == CellState.REVEALED;
+        return this.cellState == (CellState.REVEALED_SAFE || CellState.REVEALED_MINE);
     }
 }

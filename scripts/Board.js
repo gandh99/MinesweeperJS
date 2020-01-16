@@ -48,7 +48,7 @@ export default class Board {
     render() {
         for (let i = 0; i < this.numOfRows; i++) {
             for (let j = 0; j < this.numOfCols; j++) {
-                this.grid[i][j].drawBlankCell(CellState.UNREVEALED);
+                this.grid[i][j].drawCell(CellState.UNREVEALED);
             }
         }
     }
@@ -90,6 +90,7 @@ export default class Board {
             this.revealSurroundingCells(selectedRow, selectedCol);
             return;
         }
+        this.grid[selectedRow][selectedCol].markRevealed();
         this.grid[selectedRow][selectedCol].drawRevealedCell();
     }
 
