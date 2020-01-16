@@ -85,6 +85,12 @@ export default class Board {
         let selectedRow = Math.floor((y - this.startY) / this.width);
         let selectedCol = Math.floor((x - this.startX) / this.width);
 
+        // If the cell is a mine, reveal all cells
+        if (this.grid[selectedRow][selectedCol].isMine()) {
+            this.revealAllCells();
+            return;
+        }
+
         // Reveal the surrounding cells if this cell has no surrounding mines
         if (this.grid[selectedRow][selectedCol].cellValue == 0) {
             this.revealSurroundingCells(selectedRow, selectedCol);
@@ -107,6 +113,15 @@ export default class Board {
                 if (this.grid[i][j].cellValue == 0) {
                     this.revealSurroundingCells(i, j);
                 }
+            }
+        }
+    }
+
+    revealAllCells() {
+        for (let i = 0; i < this.numOfRows; i++) {
+            for (let j = 0; j < this.numOfCols; j++) {
+                this.grid[i][j].markRevealed();
+                this.grid[i][j].drawCell();
             }
         }
     }
