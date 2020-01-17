@@ -1,4 +1,4 @@
-import {getTextColour, getCellColour} from "./colourMap.js";
+import { getTextColour, getCellColour } from "./colourMap.js";
 import CellState from "./CellState.js";
 
 export default class CellDrawer {
@@ -19,14 +19,20 @@ export default class CellDrawer {
         ctx.stroke();
 
         // Draw the content (if applicable)
-        if (currentCellState == CellState.UNREVEALED) {
-            return;
-        } else if (currentCellState == CellState.REVEALED_SAFE) {
-            this.drawText(x, y, width, value);
-        } else if (currentCellState == CellState.REVEALED_MINE) {
-            this.drawMine(x, y, width);
-        }
+        switch (currentCellState) {
+            case CellState.UNREVEALED:
+                break;
+            case CellState.FLAGGED:
+                this.drawFlag(x, y, width);
+                break;
+            case CellState.REVEALED_SAFE:
+                this.drawText(x, y, width, value);
+                break;
+            case CellState.REVEALED_MINE:
+                this.drawMine(x, y, width);
+                break;
 
+        }
     }
 
     drawText(x, y, width, value) {
@@ -37,7 +43,7 @@ export default class CellDrawer {
         // Determine the size and placement of the value
         let fontSize = 0.7 * width;
         ctx.font = 'bold ' + fontSize + 'px' + ' serif';
-        ctx.fillText(value, x + fontSize/2, y + fontSize);
+        ctx.fillText(value, x + fontSize / 2, y + fontSize);
     }
 
     drawMine(x, y, width) {
@@ -46,6 +52,26 @@ export default class CellDrawer {
 
         // Create an image object. This is not attached to the DOM and is not part of the page.
         let url = "../images/mine.png";
+        let image = new Image();
+
+        // When the image has loaded, draw it to the canvas
+        image.onload = function () {
+            let imageScale = 0.6;
+            let imageSize = imageScale * width;
+            let imageMargin = (width - imageSize) / 2;
+            ctx.drawImage(image, x + imageMargin, y + imageMargin, imageSize, imageSize);
+        }
+
+        // Now set the source of the image that we want to load
+        image.src = url;
+    }
+
+    drawFlag(x, y, width) {
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+
+        // Create an image object. This is not attached to the DOM and is not part of the page.
+        let url = "../images/flag.ico";
         let image = new Image();
 
         // When the image has loaded, draw it to the canvas

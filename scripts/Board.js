@@ -5,6 +5,8 @@ export default class Board {
         this.numOfRows = numOfRows;
         this.numOfCols = numOfCols;
         this.percentOfMines = percentOfMines;
+        this.actualNumberOfMines = 0;
+        this.numberOfRevealedSafeCells = 0;
         this.startX = startX;
         this.startY = startY;
         this.width = width;     // width of 1 cell
@@ -34,6 +36,7 @@ export default class Board {
         for (let i = 0; i < this.numOfRows; i++) {
             for (let j = 0; j < this.numOfCols; j++) {
                 if (this.grid[i][j].isMine()) {
+                    this.actualNumberOfMines++;
                     continue;
                 }
 
@@ -73,16 +76,18 @@ export default class Board {
 
     select(x, y) {
         // Ignore if x and y are out of bounds
-        if (x < this.startX
-            || x > this.startX + this.width * this.numOfCols
-            || y < this.startY
-            || y > this.startY + this.width * this.numOfRows) {
+        if (this.outOfBounds(x, y)) {
             return;
         }
 
         // Get the cell that was selected
         let selectedRow = Math.floor((y - this.startY) / this.width);
         let selectedCol = Math.floor((x - this.startX) / this.width);
+
+        // If the cell is flagged, do not allow it to be selected
+        if (this.grid[selectedRow][selectedCol].cellFlagged()) {
+            return;
+        }
 
         // If the cell is a mine, reveal all cells
         if (this.grid[selectedRow][selectedCol].isMine()) {
@@ -95,7 +100,34 @@ export default class Board {
             this.revealSurroundingCells(selectedRow, selectedCol);
             return;
         }
+
+        // Reveal this cell
+        this.numberOfRevealedSafeCells++;
         this.grid[selectedRow][selectedCol].markRevealed();
+        this.grid[selectedRow][selectedCol].drawCell();
+
+        // Check for win condition
+        if (this.hasWon()) {
+            alert("Congratulations! You have won!");
+        }
+    }
+
+    flag(x, y) {
+        // Ignore if x and y are out of bounds
+        if (this.outOfBounds(x, y)) {
+            return;
+        }
+
+        // Get the cell that was selected
+        let selectedRow = Math.floor((y - this.startY) / this.width);
+        let selectedCol = Math.floor((x - this.startX) / this.width);
+
+        // Check if the cell is valid to be flagged
+        if (this.grid[selectedRow][selectedCol].cellRevealed()) {
+            return;
+        }
+
+        this.grid[selectedRow][selectedCol].toggleFlagged();
         this.grid[selectedRow][selectedCol].drawCell();
     }
 
@@ -106,6 +138,7 @@ export default class Board {
                     continue;
                 }
 
+                this.numberOfRevealedSafeCells++;
                 this.grid[i][j].markRevealed();
                 this.grid[i][j].drawCell();
 
@@ -123,5 +156,16 @@ export default class Board {
                 this.grid[i][j].drawCell();
             }
         }
+    }
+
+    outOfBounds(x, y) {
+        return (x < this.startX
+            || x > this.startX + this.width * this.numOfCols
+            || y < this.startY
+            || y > this.startY + this.width * this.numOfRows);
+    }
+
+    hasWon() {
+        return this.numberOfRevealedSafeCells == this.numOfRows * this.numOfCols - this.actualNumberOfMines;
     }
 }

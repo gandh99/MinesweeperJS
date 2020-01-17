@@ -7,7 +7,7 @@ let ctx = canvas.getContext('2d');
 ctx.canvas.width = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
 
-// Draw size buttons
+// Parameters for drawing size buttons
 let startX = 10, startY = 100;
 let sizeButtonVerticalMargin = 100;
 let buttonWidth = 200, buttonHeight = 70;

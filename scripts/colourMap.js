@@ -12,6 +12,7 @@ textColourMap.set(8, "#808080");
 
 let cellColourMap = new Map();
 cellColourMap.set(CellState.UNREVEALED, "#c2bfc0");
+cellColourMap.set(CellState.FLAGGED, "#c2bfc0");
 cellColourMap.set(CellState.REVEALED_SAFE, "white");
 cellColourMap.set(CellState.REVEALED_MINE, "red");
 

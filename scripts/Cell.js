@@ -8,6 +8,7 @@ export default class Cell {
         this.width = width;
         this.value = value;
         this.isRevealed = false;
+        this.isFlagged = false;
         this.cellState = CellState.UNREVEALED;
         this.cellDrawer = new CellDrawer();
     }
@@ -33,7 +34,16 @@ export default class Cell {
         this.cellState = (this.value == -1) ? CellState.REVEALED_MINE : CellState.REVEALED_SAFE;
     }
 
+    toggleFlagged() {
+        this.isFlagged = !this.isFlagged;
+        this.cellState = (this.isFlagged) ? CellState.FLAGGED : CellState.UNREVEALED;
+    }
+
     cellRevealed() {
         return this.isRevealed;
+    }
+
+    cellFlagged() {
+        return this.isFlagged;
     }
 }
